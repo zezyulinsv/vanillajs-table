@@ -124,7 +124,7 @@ class Table {
             if (index === 0) {
                 td.width = "auto";
             }
-        });
+        }, this);
 
         // Inserting the data table into div.
         var div = document.createElement("div");
