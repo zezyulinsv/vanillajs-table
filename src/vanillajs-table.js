@@ -28,7 +28,7 @@ class Table {
          * container (this.element), and create two
          * tables: the header table and the data table.
          */
-        var element = this.element;
+        const element = this.element;
 
         // Checking the table container.
         if (!element || element.nodeType !== Node.ELEMENT_NODE) {
@@ -47,11 +47,11 @@ class Table {
         };
 
         // Formating the header table.
-        var headers = new Object();
+        let headers = new Object();
 
         this.data.forEach(function(column) {
             if (typeof(column) === "object") {
-                for (var key in column) {
+                for (let key in column) {
                     if (!(key in headers)) {
                         headers[key] = new Object();
                     }
@@ -76,35 +76,36 @@ class Table {
 
         // Visualizing the header table.
         var table = document.createElement("table");
-        var tr = table.appendChild(document.createElement("tr"));
-        for (var key in headers) {
-            var td = tr.appendChild(document.createElement("td"));
-            var name = "name" in headers[key] ? headers[key].name : key;
+        let tr = table.appendChild(document.createElement("tr"));
+        for (let key in headers) {
+            let td = tr.appendChild(document.createElement("td"));
+            let name = "name" in headers[key] ? headers[key].name : key;
             td.appendChild(document.createTextNode(name));
         };
         table.className = "vanillajs-table-header";
         element.appendChild(table);
 
         // Getting headers width to applying to data table.
-        var headers_names = Object.keys(headers);
+        let headers_names = Object.keys(headers);
         tr.childNodes.forEach(function(td, index) {
-            var header = headers_names[index];
+            let header = headers_names[index];
             headers[header].width = td.offsetWidth;
         });
 
         // Creating the data table style.
         // We have to add "box-sizing" attribute to correct width setting.
-        var style = document.createElement("style");
-        var property = document.createTextNode(".vanillajs-table td { box-sizing: border-box; }");
-        style.appendChild(property);
+        let style = document.createElement("style");
+        let style_property = document.createTextNode(".vanillajs-table td { box-sizing: border-box; }");
+        style.appendChild(style_property);
         document.head.appendChild(style);
 
         // Visualizing the data table.
         var table = document.createElement("table");
         this.data.forEach(function(row, index) {
-            var tr = table.appendChild(document.createElement("tr"));
-            for (var header in headers) {
-                var value = this.empty;
+            let tr = table.appendChild(document.createElement("tr"));
+            let td = undefined;
+            for (let header in headers) {
+                let value = this.empty;
                 let property = headers[header];
                 if (typeof(row) === "object") {
                     if (header in row) {
@@ -118,7 +119,7 @@ class Table {
                 } else if (header === "(values)") {
                     value = row;
                 }
-                var td = tr.appendChild(document.createElement("td"));
+                td = tr.appendChild(document.createElement("td"));
                 td.appendChild(document.createTextNode(value));
                 // Setting a TD-elements width for first TR-element only.
                 // Setting width - is a slowly action.
@@ -133,14 +134,14 @@ class Table {
         }, this);
 
         // Inserting the data table into div.
-        var div = document.createElement("div");
+        let div = document.createElement("div");
         div.className = "vanillajs-table-data";
         div.style.overflow = "auto";
 
         // Setting a table height.
         if (this.height) {
             // User can set height as number or string.
-            var height = parseFloat(this.height);
+            let height = parseFloat(this.height);
             div.style.maxHeight = height + "px";
         }
         div.appendChild(table);
@@ -159,7 +160,7 @@ class Table {
          * The header table must be placed before the data table,
          * otherwise it will not work.
          */
-        var headers_width = [];
+        let headers_width = [];
         this.childNodes.forEach(function(table) {
             if (table.classList.contains("vanillajs-table-header")) {
                 // It's the header table.
@@ -183,13 +184,13 @@ class Table {
  * Delay 100ms.
  */
 (function() {
-    var timeisout = 0;
+    let timeisout = 0;
 
     window.onresize = function() {
         clearTimeout(timeisout);
         timeisout = setTimeout(function() {
-            var tables = document.getElementsByClassName("vanillajs-table");
-            for (var i = 0; i < tables.length; i++) {
+            let tables = document.getElementsByClassName("vanillajs-table");
+            for (let i = 0; i < tables.length; i++) {
                 tables[i].resize();
             }
         }, 100);
