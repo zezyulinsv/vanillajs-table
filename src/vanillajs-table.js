@@ -105,9 +105,15 @@ class Table {
             var tr = table.appendChild(document.createElement("tr"));
             for (var header in headers) {
                 var value = this.empty;
+                let property = headers[header];
                 if (typeof(row) === "object") {
                     if (header in row) {
-                        value = row[header];
+                        // Appling data format option.
+                        if ("format" in property && typeof(property.format) === "function") {
+                            value = property.format(row[header]);
+                        } else {
+                            value = row[header];
+                        }
                     }
                 } else if (header === "(values)") {
                     value = row;
@@ -117,7 +123,7 @@ class Table {
                 // Setting a TD-elements width for first TR-element only.
                 // Setting width - is a slowly action.
                 if (index === 0) {
-                    td.width = headers[header].width;
+                    td.width = property.width;
                 }
             };
             // Last element should not have width attribute.
