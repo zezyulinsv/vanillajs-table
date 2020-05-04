@@ -81,6 +81,10 @@ class Table {
             let td = tr.appendChild(document.createElement("td"));
             let name = "name" in headers[key] ? headers[key].name : key;
             td.appendChild(document.createTextNode(name));
+            // Setting a TD-elements width.
+            if ("width" in headers[key]) {
+                td.width = headers[key].width;
+            }
         };
         table.className = "vanillajs-table-header";
         element.appendChild(table);
@@ -89,7 +93,8 @@ class Table {
         let headers_names = Object.keys(headers);
         tr.childNodes.forEach(function(td, index) {
             let header = headers_names[index];
-            headers[header].width = td.offsetWidth;
+            let property = headers[header];
+            property.width = property.width || td.offsetWidth;
         });
 
         // Creating the data table style.
@@ -151,6 +156,9 @@ class Table {
         // We have to calling this method each time when the window
         // resize event is triggered.
         element.resize = this.resize;
+
+        // Resizing table after content is loading.
+        element.resize();
     }
 
     resize() {
